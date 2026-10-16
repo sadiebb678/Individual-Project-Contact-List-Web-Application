@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+import boto3
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,14 @@ ALLOWED_HOSTS = [
     '*'
 ]
 
-
+#Auto gen token using active AWS terminal credentials per default AWS security config
+def get_aws_iam_token(): 
+    client = boto3.client('rds', region_name='us-east-2')
+    return client.generate_db_auth_token(
+        DBHostname='database-indv-proj.cluster-cn8wc6u4uyce.us-east-2.rds.amazonaws.com',
+        Port=5432,
+        DBUsername='postgres'
+    )
 # Application definition
 
 INSTALLED_APPS = [
@@ -75,13 +83,16 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'django_prod',
         'USER': 'postgres',
-        'PASSWORD': 'YOUR_RDS_MASTER_PASSWORD',  # The password you used to log in just now
-        'HOST': 'database-indv-proj.cluster-cn8wc6u4uyce.us-east-2.rds.amazonaws.com', 
+        'PASSWORD': get_aws_iam_token(),  # <-- Dynamic function call handles authentication token
+        'HOST': 'database-indv-proj.cluster-cn8wc6u4uyce.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',  # <-- Crucial for encrypted token transmission
+        },
     }
 }
 
