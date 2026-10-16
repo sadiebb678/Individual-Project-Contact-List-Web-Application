@@ -26,9 +26,7 @@ SECRET_KEY = 'django-insecure-vioo$@ec5f)pid-#z_z(p66v0$jzo4c#oz=89wk#mop*mmnqe9
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'django-env.eba-3mjv9hia.us-west-2.elasticbeanstalk.com',
-    'localhost',
-    '127.0.0.1',
+    '*'
 ]
 
 
@@ -77,9 +75,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'django_prod',
+        'USER': 'postgres',
+        'PASSWORD': 'YOUR_RDS_MASTER_PASSWORD',  # The password you used to log in just now
+        'HOST': '://amazonaws.com', 
+        'PORT': '5432',
     }
 }
 
