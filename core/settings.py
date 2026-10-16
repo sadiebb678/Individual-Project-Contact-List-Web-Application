@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'django_prod',
         'USER': 'postgres',
         'PASSWORD': 'YOUR_RDS_MASTER_PASSWORD',  # The password you used to log in just now
-        'HOST': '://amazonaws.com', 
+        'HOST': 'database-indv-proj.cluster-cn8wc6u4uyce.us-east-2.rds.amazonaws.com', 
         'PORT': '5432',
     }
 }
